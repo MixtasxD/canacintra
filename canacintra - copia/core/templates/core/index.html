@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+
+<!--seccion del slider--> 
+{% load static %}
+
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+
+    <div class="carousel-item active">
+      <div class="site-cover site-cover-sm same-height overlay single-page"
+           style="background-image: url({% static 'core/images/hero_6.jpg' %});
+                  min-height: 300px; background-size: cover; background-position: center;">
+        <div class="container">
+          <div class="row same-height justify-content-center">
+            <div class="col-md-6">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div class="carousel-item">
+      <div class="site-cover site-cover-sm same-height overlay single-page"
+           style="background-image: url({% static 'core/images/hero_6-1.jpg' %});
+                  min-height: 300px; background-size: cover; background-position: center;">
+        <div class="container">
+          <div class="row same-height justify-content-center">
+            <div class="col-md-6">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Controles -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+
+
+<!--empieza seccion noticias-->
+  <section class="section posts-entry posts-entry-sm bg-light">
+
+        <div class="row mb-4">
+      <div class="col-sm-6">
+        <h2 class="posts-entry-title">NOTICIAS</h2>
+      </div>
+      <div class="col-sm-6 text-sm-end"><a href="Category.html" class="read-more">VER TODOS</a></div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-lg-3">
+          <div class="blog-entry">
+            <a href="{% url 'noticia' %}" class="img-link">
+              <img src="{% static 'core/images/img_1_horizontal.jpg' %}" alt="Image" class="img-fluid">
+            </a>
+            <span class="date">Apr. 14th, 2022</span>
+            <h2><a href="{% url 'noticia' %}">Thought you loved Python? Wait until you meet Rust</a></h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            <p><a href="#" class="read-more">Continue Reading</a></p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="blog-entry">
+            <a href="{% url 'noticia' %}" class="img-link">
+              <img src="{% static 'core/images/img_2_horizontal.jpg' %}" alt="Image" class="img-fluid">
+            </a>
+            <span class="date">Apr. 14th, 2022</span>
+            <h2><a href="{% url 'noticia' %}">Startup vs corporate: What job suits you best?</a></h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            <p><a href="#" class="read-more">Continue Reading</a></p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="blog-entry">
+            <a href="{% url 'noticia' %}"class="img-link">
+              <img src="{% static 'core/images/img_3_horizontal.jpg' %}" alt="Image" class="img-fluid">
+            </a>
+            <span class="date">Apr. 14th, 2022</span>
+            <h2><a href="{% url 'noticia' %}">UK sees highest inflation in 30 years</a></h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            <p><a href="#" class="read-more">Continue Reading</a></p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="blog-entry">
+            <a href="{% url 'noticia' %}" class="img-link">
+              <img src="{% static 'core/images/img_4_horizontal.jpg' %}" alt="Image" class="img-fluid">
+            </a>
+            <span class="date">Apr. 14th, 2022</span>
+            <h2><a href="{% url 'noticia' %}">Don’t assume your user data in the cloud is safe</a></h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            <p><a href="#" class="read-more">Continue Reading</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!--termina seccion noticias-->
+
+{% endblock content %}
