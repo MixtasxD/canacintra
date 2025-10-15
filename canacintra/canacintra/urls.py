@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(('core.urls', 'core'), namespace='core')),  
     path('health/', lambda r: HttpResponse('ok')),
+    path('accounts/', include('django.contrib.auth.urls')),
     # Favicon: apunta a una imagen estática existente
     path('favicon.ico', RedirectView.as_view(url='/static/core/images/img_1_sq.jpg', permanent=True)),
 ]

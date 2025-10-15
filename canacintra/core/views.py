@@ -2,6 +2,10 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Publicacion
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, UpdateView, DeleteView
+from .forms import PublicacionForm
 
 # Create your views here. 
 def index(request): 
@@ -38,3 +42,32 @@ def posts(request):
 def post_detail(request, pk: int):
     post = get_object_or_404(Publicacion, pk=pk)
     return render(request, 'core/post_detail.html', { 'post': post })
+
+
+# CRUD Publicacion
+class PublicacionCreateView(LoginRequiredMixin, CreateView):
+    model = Publicacion
+    form_class = PublicacionForm
+    template_name = 'core/publicacion_form.html'
+    success_url = reverse_lazy('core:posts')
+
+    def form_valid(self, form):
+        # Asignar usuario creador si aplica
+        obj = form.save(commit=False)
+        if self.request.user.is_authenticated:
+            obj.fk_user = self.request.user
+        obj.save()
+        return super().form_valid(form)
+
+
+class PublicacionUpdateView(LoginRequiredMixin, UpdateView):
+    model = Publicacion
+    form_class = PublicacionForm
+    template_name = 'core/publicacion_form.html'
+    success_url = reverse_lazy('core:posts')
+
+
+class PublicacionDeleteView(LoginRequiredMixin, DeleteView):
+    model = Publicacion
+    template_name = 'core/publicacion_confirm_delete.html'
+    success_url = reverse_lazy('core:posts')

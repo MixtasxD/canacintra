@@ -13,5 +13,9 @@ urlpatterns = [
     # Blog dinámico
     path("posts", views.posts, name="posts"),
     path("posts/<int:pk>", views.post_detail, name="post_detail"),
+    # CRUD Publicacion
+    path("posts/create", views.PublicacionCreateView.as_view(), name="post_create"),
+    path("posts/<int:pk>/edit", views.PublicacionUpdateView.as_view(), name="post_edit"),
+    path("posts/<int:pk>/delete", views.PublicacionDeleteView.as_view(), name="post_delete"),
 
 ]

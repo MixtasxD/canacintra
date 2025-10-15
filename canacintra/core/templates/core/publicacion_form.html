@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ form.instance.pk|yesno:"Editar publicación,Nueva publicación" }}{% endblock %}
+{% block content %}
+<h1 class="mb-4">{{ form.instance.pk|yesno:"Editar publicación,Nueva publicación" }}</h1>
+<form method="post">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <div class="mb-3">{{ form.titulo.label_tag }} {{ form.titulo }}</div>
+  <div class="mb-3">{{ form.resumen.label_tag }} {{ form.resumen }}</div>
+  <div class="mb-3">{{ form.contenido.label_tag }} {{ form.contenido }}</div>
+  <div class="mb-3">{{ form.fk_categoria.label_tag }} {{ form.fk_categoria }}</div>
+  <div class="mb-3">{{ form.fk_estatu.label_tag }} {{ form.fk_estatu }}</div>
+  <div class="mb-3">{{ form.fk_foto_portada.label_tag }} {{ form.fk_foto_portada }}</div>
+  <button type="submit" class="btn btn-primary">Guardar</button>
+  <a href="{% url 'core:posts' %}" class="btn btn-secondary ms-2">Cancelar</a>
+  {% if form.instance.pk %}
+    <a href="{% url 'core:post_delete' form.instance.pk %}" class="btn btn-outline-danger ms-2">Eliminar</a>
+  {% endif %}
+</form>
+{% endblock %}
