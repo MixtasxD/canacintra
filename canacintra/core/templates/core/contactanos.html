@@ -1,11 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <b>ESTA ES LA VISTA CONTACTANOS</b>
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Contáctanos{% endblock %}
+{% block content %}
+
+<section class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="mb-4">Contáctanos</h1>
+                <p class="text-muted">Envíanos un mensaje y nos pondremos en contacto.</p>
+                <form action="#" method="post" class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" placeholder="Tu nombre" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" placeholder="tu@email.com" />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Mensaje</label>
+                        <textarea class="form-control" rows="5" placeholder="Escribe tu mensaje..."></textarea>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary" type="submit">Enviar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-light rounded">
+                    <h5 class="mb-3">Información</h5>
+                    <p class="mb-1">Email: contacto@canacintra.mx</p>
+                    <p class="mb-0">Tel: +52 (000) 000 0000</p>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+</section>
+
+{% endblock %}
