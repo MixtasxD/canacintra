@@ -49,15 +49,14 @@
 
 <!--empieza seccion noticias-->
   <section class="section posts-entry posts-entry-sm bg-light">
-
-        <div class="row mb-4">
-      <div class="col-sm-6">
-        <h2 class="posts-entry-title">NOTICIAS</h2>
-      </div>
-  <div class="col-sm-6 text-sm-end"><a href="{% url 'core:posts' %}" class="read-more">VER TODOS</a></div>
-    </div>
-
     <div class="container">
+      <div class="row mb-4">
+        <div class="col-sm-6">
+          <h2 class="posts-entry-title">NOTICIAS</h2>
+        </div>
+        <div class="col-sm-6 text-sm-end"><a href="{% url 'core:posts' %}" class="read-more">VER TODOS</a></div>
+      </div>
+
       <div class="row">
         <div class="col-md-6 col-lg-3">
           <div class="blog-entry">
@@ -67,7 +66,7 @@
             <span class="date">Apr. 14th, 2022</span>
             <h2><a href="{% url 'core:noticia' %}">Thought you loved Python? Wait until you meet Rust</a></h2>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            <p><a href="#" class="read-more">Continue Reading</a></p>
+            <p><a href="{% url 'core:noticia' %}" class="read-more">Continue Reading</a></p>
           </div>
         </div>
         <div class="col-md-6 col-lg-3">
@@ -78,18 +77,18 @@
             <span class="date">Apr. 14th, 2022</span>
             <h2><a href="{% url 'core:noticia' %}">Startup vs corporate: What job suits you best?</a></h2>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            <p><a href="#" class="read-more">Continue Reading</a></p>
+            <p><a href="{% url 'core:noticia' %}" class="read-more">Continue Reading</a></p>
           </div>
         </div>
         <div class="col-md-6 col-lg-3">
           <div class="blog-entry">
-            <a href="{% url 'core:noticia' %}"class="img-link">
+            <a href="{% url 'core:noticia' %}" class="img-link">
               <img src="{% static 'core/images/img_3_horizontal.jpg' %}" alt="Image" class="img-fluid">
             </a>
             <span class="date">Apr. 14th, 2022</span>
             <h2><a href="{% url 'core:noticia' %}">UK sees highest inflation in 30 years</a></h2>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            <p><a href="#" class="read-more">Continue Reading</a></p>
+            <p><a href="{% url 'core:noticia' %}" class="read-more">Continue Reading</a></p>
           </div>
         </div>
         <div class="col-md-6 col-lg-3">
@@ -100,7 +99,7 @@
             <span class="date">Apr. 14th, 2022</span>
             <h2><a href="{% url 'core:noticia' %}">Don’t assume your user data in the cloud is safe</a></h2>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-            <p><a href="#" class="read-more">Continue Reading</a></p>
+            <p><a href="{% url 'core:noticia' %}" class="read-more">Continue Reading</a></p>
           </div>
         </div>
       </div>
