@@ -1,6 +1,5 @@
-from django.urls import path 
-from.import views 
-from core.views import *
+from django.urls import path
+from . import views
 
 app_name = "core"
 
@@ -10,6 +9,9 @@ urlpatterns = [
     path("noticia", views.noticia, name="noticia"),
     path("contactanos", views.contactanos, name="contactanos"),
     path("categoria", views.categoria, name="categoria"),
-    path("perfil", views.perfil, name="perfil")
+    path("perfil", views.perfil, name="perfil"),
+    # Blog dinámico
+    path("posts", views.posts, name="posts"),
+    path("posts/<int:pk>", views.post_detail, name="post_detail"),
 
 ]

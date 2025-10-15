@@ -29,6 +29,6 @@ class PublicacionArchivoAdmin(admin.ModelAdmin):
 admin.site.register(PublicacionArchivo,PublicacionArchivoAdmin)
 
 class ComentarioAdmin(admin.ModelAdmin):
-    list_display = ['id','contenido', 'created', 'updated','fk_user','fk_estatu','fk_publicacion','fk_user']
+    list_display = ['id','contenido', 'created', 'updated','fk_user','fk_estatu','fk_publicacion']
 
 admin.site.register(Comentario,ComentarioAdmin)

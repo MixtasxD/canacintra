@@ -48,6 +48,21 @@ class Archivo(models.Model):
         db_table = 'archivo'
         verbose_name_plural = 'Archivo'
 
+    @property
+    def get_url(self) -> str:
+        """Return a usable URL for this archivo.
+        - If ruta is an absolute URL (http/https), return as-is.
+        - Otherwise, prefix MEDIA_URL so it is served as media.
+        - If ruta is empty, return empty string.
+        """
+        from django.conf import settings
+        if not self.ruta:
+            return ""
+        r = str(self.ruta)
+        if r.startswith("http://") or r.startswith("https://"):
+            return r
+        return settings.MEDIA_URL + r.lstrip('/')
+
 
 class Publicacion(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')

@@ -4,31 +4,29 @@ services:
     env: python
     plan: free
     buildCommand: |
-  python -m pip install --upgrade pip
-  pip install -r requirements.txt
-      python -Xutf8 - <<'PY'
-from pathlib import Path
-Path('canacintra').exists()
-PY
+      python -m pip install --upgrade pip
+      pip install -r requirements.txt
       python - <<'PY'
-import os
-from pathlib import Path
-from django.core.management.utils import get_random_secret_key
-env_path = Path('.env')
-if not env_path.exists():
-    env_path.write_text('DJANGO_SECRET_KEY=' + get_random_secret_key() + '\n')
-print('Ensured .env with DJANGO_SECRET_KEY')
-PY
+      import os
+      from pathlib import Path
+      from django.core.management.utils import get_random_secret_key
+      env_path = Path('.env')
+      if not env_path.exists() or 'DJANGO_SECRET_KEY=' not in env_path.read_text():
+          env_path.write_text('DJANGO_SECRET_KEY=' + get_random_secret_key() + '\n', encoding='utf-8')
+      print('Ensured .env with DJANGO_SECRET_KEY')
+      PY
     startCommand: |
-  cd canacintra
-  python manage.py migrate --noinput
-  python manage.py collectstatic --noinput --settings=canacintra.settings
-  gunicorn canacintra.wsgi:application --bind 0.0.0.0:$PORT
+      cd canacintra
+      python manage.py migrate --noinput
+      python manage.py collectstatic --noinput
+      gunicorn canacintra.wsgi:application --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
         value: 3.12.6
       - key: DJANGO_SETTINGS_MODULE
         value: canacintra.settings
+      - key: DJANGO_DEBUG
+        value: "False"
       - key: DATABASE_URL
         sync: false
       - key: RENDER_EXTERNAL_HOSTNAME

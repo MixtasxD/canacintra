@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Publicaciones{% endblock %}
+{% block content %}
+<h1 class="mb-4">Publicaciones</h1>
+<div class="row">
+  {% for p in page_obj %}
+  <div class="col-md-6 col-lg-4">
+    <div class="blog-entry">
+      <a href="{% url 'core:post_detail' p.id %}" class="img-link">
+        {% if p.fk_foto_portada and p.fk_foto_portada.get_url %}
+          <img src="{{ p.fk_foto_portada.get_url }}" alt="{{ p.titulo }}" class="img-fluid">
+        {% else %}
+          <img src="{% static 'core/images/img_1_horizontal.jpg' %}" alt="{{ p.titulo }}" class="img-fluid">
+        {% endif %}
+      </a>
+      <span class="date">{{ p.created|date:"M d, Y" }}</span>
+      <h2><a href="{% url 'core:post_detail' p.id %}">{{ p.titulo }}</a></h2>
+      {% if p.resumen %}<p>{{ p.resumen }}</p>{% endif %}
+    </div>
+  </div>
+  {% empty %}
+    <p>No hay publicaciones aún.</p>
+  {% endfor %}
+</div>
+
+{% if page_obj and page_obj.paginator.num_pages > 1 %}
+<nav aria-label="Paginación" class="mt-4">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+    {% endif %}
+  </ul>
+  </nav>
+{% endif %}
+{% endblock %}
