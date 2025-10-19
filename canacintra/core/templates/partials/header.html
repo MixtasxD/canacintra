@@ -24,6 +24,8 @@
   <link rel="stylesheet" href="{% static 'core/css/glightbox.min.css' %}" />
   <link rel="stylesheet" href="{% static 'core/css/flatpickr.min.css' %}" />
   <link rel="stylesheet" href="{% static 'core/css/style.css' %}" />
+  
+    {% block extra_css %}{% endblock %}
 
   <title>{% block title %}Blog{% endblock %}</title>
 </head>

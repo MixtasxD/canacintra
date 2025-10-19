@@ -1,150 +1,153 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block extra_css %}
+<style>
+  /* Hover-reveal fixed sidebar */
+  #perfil-sidebar {
+    position: fixed;
+    top: 0; /* se ajusta vía JS al alto del header */
+    left: 0;
+    height: 100vh;
+    width: 260px;               /* ancho expandido */
+    transform: translateX(-260px); /* completamente oculto */
+    transition: transform 0.25s ease-in-out;
+    z-index: 1040;               /* por encima del contenido */
+    box-shadow: 0 0 20px rgba(0,0,0,.2);
+  }
+  #perfil-sidebar:hover,
+  #perfil-sidebar.perfil-open {
+    transform: translateX(0);
+  }
+  #perfil-sidebar .nav-link { color: #fff; }
+  #perfil-sidebar .nav-link.active { color: #0d6efd; background-color: rgba(255,255,255,.1); }
+
+  /* Handle visible para activar con hover/click */
+  #perfil-sidebar-handle {
+    position: fixed;
+    top: 40%; /* se ajusta vía JS al alto del header */
+    left: 0;
+    width: 10px;
+    height: 120px;
+    background: #0d6efd;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    z-index: 1041;
+    cursor: ew-resize;
+  }
+
+  /* Opcional: empujar contenido cuando abierto en pantallas grandes */
+  @media (min-width: 992px) {
+    body.perfil-sidebar-open main #main .container {
+      margin-left: 260px;
+      transition: margin-left 0.25s ease-in-out;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function(){
+    const sidebar = document.getElementById('perfil-sidebar');
+    const handle  = document.getElementById('perfil-sidebar-handle');
+    if (!sidebar || !handle) return;
+
+    // Ajustar top según la altura del header (site-nav)
+    function adjustTop(){
+      const nav = document.querySelector('.site-nav');
+      const h = nav ? nav.offsetHeight : 0;
+      sidebar.style.top = h + 'px';
+      // Centrar el handle verticalmente respecto a la ventana, pero debajo del header
+      const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+      const handleHeight = 120;
+      const top = Math.max(h + 16, h + (vh - h - handleHeight)/2);
+      handle.style.top = top + 'px';
+    }
+    adjustTop();
+    window.addEventListener('resize', adjustTop);
+
+    let open = false;
+    function setOpen(state){
+      open = state;
+      sidebar.classList.toggle('perfil-open', open);
+      document.body.classList.toggle('perfil-sidebar-open', open);
+      handle.setAttribute('aria-expanded', String(open));
+    }
+
+    let hoverTimeout;
+    handle.addEventListener('mouseenter', () => {
+      clearTimeout(hoverTimeout);
+      setOpen(true);
+    });
+    handle.addEventListener('mouseleave', () => {
+      // Cierra si no entraste al sidebar en 200ms
+      hoverTimeout = setTimeout(() => setOpen(false), 200);
+    });
+    sidebar.addEventListener('mouseenter', () => {
+      clearTimeout(hoverTimeout);
+      setOpen(true);
+    });
+    sidebar.addEventListener('mouseleave', () => setOpen(false));
+    handle.addEventListener('click', () => setOpen(!open));
+  })();
+  </script>
+{% endblock %}
+
 {% block content %}
+<div id="perfil-sidebar-handle" tabindex="0" aria-label="Abrir menú"></div>
+<aside id="perfil-sidebar" class="bg-dark text-white">
+  <div class="p-3">
+    <a href="/" class="d-flex align-items-center pb-3 mb-3 text-white text-decoration-none border-bottom">
+      <i class="bi bi-bootstrap fs-4 me-2"></i>
+      <span class="fs-5">Menu</span>
+    </a>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item"><a class="nav-link text-white active" href="#"><i class="bi bi-house me-2"></i>Mi perfil</a></li>
+      <li>
+        <a class="nav-link text-white" data-bs-toggle="collapse" href="#submenu1" role="button" aria-expanded="true" aria-controls="submenu1"><i class="bi bi-speedometer2 me-2"></i>Noticias</a>
+        <div class="collapse show" id="submenu1">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
+            <li><a href="#" class="link-light d-inline-block py-1">Item 1</a></li>
+            <li><a href="#" class="link-light d-inline-block py-1">Item 2</a></li>
+          </ul>
+        </div>
+      </li>
+      <li><a class="nav-link text-white" href="#"><i class="bi bi-table me-2"></i>Comentarios</a></li>
+      <li>
+        <a class="nav-link text-white" data-bs-toggle="collapse" href="#submenu2" role="button" aria-expanded="false" aria-controls="submenu2"><i class="bi bi-bootstrap me-2"></i>Archivos</a>
+        <div class="collapse" id="submenu2">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
+            <li><a href="#" class="link-light d-inline-block py-1">Item 1</a></li>
+            <li><a href="#" class="link-light d-inline-block py-1">Item 2</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a class="nav-link text-white" data-bs-toggle="collapse" href="#submenu3" role="button" aria-expanded="false" aria-controls="submenu3"><i class="bi bi-grid me-2"></i>Usuarios</a>
+        <div class="collapse" id="submenu3">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
+            <li><a href="#" class="link-light d-inline-block py-1">Product 1</a></li>
+            <li><a href="#" class="link-light d-inline-block py-1">Product 2</a></li>
+            <li><a href="#" class="link-light d-inline-block py-1">Product 3</a></li>
+            <li><a href="#" class="link-light d-inline-block py-1">Product 4</a></li>
+          </ul>
+        </div>
+      </li>
+      <li><a class="nav-link text-white" href="#"><i class="bi bi-people me-2"></i>Permisos</a></li>
+      <li><a class="nav-link text-white" href="#"><i class="bi bi-eye me-2"></i>Visitas</a></li>
+      <li><a class="nav-link text-white" href="#"><i class="bi bi-shield-lock me-2"></i>Cambiar contraseña</a></li>
+    </ul>
+  </div>
+  </aside>
 
 <div class="section">
   <div class="container">
     <div class="row">
-
-      <!-- COLUMNA IZQUIERDA: SIDEBAR -->
-      <div class="col-lg-4 mb-5 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
-        <div class="contact-info">
-
-          <div class="container-fluid">
-            <div class="row flex-nowrap">
-              <div class="col-auto col-md-6 col-xl-6 px-sm-2 px-0 bg-dark">
-                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                  <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <span class="fs-5 d-none d-sm-inline">Menu</span>
-                  </a>
-
-                  <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                    <li class="nav-item">
-                      <a href="#" class="nav-link align-middle px-0">
-                        <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Mi perfil</span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                        <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">Noticias</span>
-                      </a>
-                      <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
-                        <li class="w-100">
-                          <a href="#" class="nav-link px-0">
-                            <span class="d-none d-sm-inline">Item</span> 1
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" class="nav-link px-0">
-                            <span class="d-none d-sm-inline">Item</span> 2
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-
-                    <li>
-                      <a href="#" class="nav-link px-0 align-middle">
-                        <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Comentarios</span>
-                      </a>
-                    </li>
-
-                    <li>
-                      <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                        <i class="fs-4 bi-bootstrap"></i> <span class="ms-1 d-none d-sm-inline">Archivos</span>
-                      </a>
-                      <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
-                        <li class="w-100">
-                          <a href="#" class="nav-link px-0">
-                            <span class="d-none d-sm-inline">Item</span> 1
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" class="nav-link px-0">
-                            <span class="d-none d-sm-inline">Item</span> 2
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-
-                    <li>
-                      <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                        <i class="fs-4 bi-grid"></i> <span class="ms-1 d-none d-sm-inline">Usuarios</span>
-                      </a>
-                      <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
-                        <li class="w-100">
-                          <a href="#" class="nav-link px-0">
-                            <span class="d-none d-sm-inline">Product</span> 1
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" class="nav-link px-0">
-                            <span class="d-none d-sm-inline">Product</span> 2
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" class="nav-link px-0">
-                            <span class="d-none d-sm-inline">Product</span> 3
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#" class="nav-link px-0">
-                            <span class="d-none d-sm-inline">Product</span> 4
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-
-                    <li>
-                      <a href="#" class="nav-link px-0 align-middle">
-                        <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Permisos</span>
-                      </a>
-                    </li>
-
-                    
-                    <li>
-                      <a href="#" class="nav-link px-0 align-middle">
-                        <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Visitas</span>
-                      </a>
-                    </li>
-
-                    
-                    <li>
-                      <a href="#" class="nav-link px-0 align-middle">
-                        <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Cambiar contraseña</span>
-                      </a>
-                    </li>
-                  </ul>
-
-                  <hr>
-                  <div class="dropdown pb-4">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                       id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                      <img src="https://github.com/mdo.png" alt="hugenerd" width="30" height="30" class="rounded-circle">
-                      <span class="d-none d-sm-inline mx-1">Usuario</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                      <li><a class="dropdown-item" href="#">New project...</a></li>
-                      <li><a class="dropdown-item" href="#">Settings</a></li>
-                      <li><a class="dropdown-item" href="#">Profile</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Sign out</a></li>
-                    </ul>
-                  </div>
-
-                </div><!-- /sidebar inner -->
-              </div><!-- /sidebar col -->
-            </div><!-- /row flex-nowrap -->
-          </div><!-- /container-fluid -->
-
-        </div><!-- /contact-info -->
-      </div><!-- /col izquierda -->
-
-      <!-- COLUMNA DERECHA: FORM -->
-      <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+      <div class="col-12" data-aos="fade-up" data-aos-delay="200">
         <form action="#">
           <div class="row">
-            <div class="col-6 mb-6">
+            <div class="col-6 mb-3">
               <input type="text" class="form-control" placeholder="Your Name">
             </div>
             <div class="col-6 mb-3">
@@ -154,17 +157,15 @@
               <input type="text" class="form-control" placeholder="Subject">
             </div>
             <div class="col-12 mb-3">
-              <textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
+              <textarea cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
             </div>
             <div class="col-12">
               <input type="submit" value="Send Message" class="btn btn-primary">
             </div>
           </div>
         </form>
-      </div><!-- /col derecha -->
-
-    </div><!-- /row -->
-  </div><!-- /container -->
-</div><!-- /section -->
-
-{% endblock content %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
